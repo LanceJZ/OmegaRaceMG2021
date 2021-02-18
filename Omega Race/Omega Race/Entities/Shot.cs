@@ -36,12 +36,13 @@ namespace Omega_Race.Entities
         protected override void LoadContent()
         {
             base.LoadContent();
-            LoadVectorModel("Dot");
+            
         }
 
         public void BeginRun()
         {
-
+            Vector3[] lineVertex = { new Vector3(-0.3f, 0, 0), new Vector3(0.3f, 0, 0) };
+            InitializePoints(lineVertex, "Shot");
         }
         #endregion
         #region Update
@@ -49,14 +50,9 @@ namespace Omega_Race.Entities
         {
             base.Update(gameTime);
 
-            if (Enabled)
+            if (life.Elapsed)
             {
-                Position = Core.WrapSideToSide(Core.WrapTopBottom(Position, Core.ScreenHeight), Core.ScreenWidth);
-
-                if (life.Elapsed)
-                {
-                    Enabled = false;
-                }
+                Enabled = false;
             }
         }
         #endregion

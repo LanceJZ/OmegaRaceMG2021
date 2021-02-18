@@ -11,6 +11,7 @@ namespace Omega_Race.Entities
 {
     public class DeathShip : VectorModel
     {
+        //Drops mines every few seconds, chases player.
         #region Fields
         Camera cameraRef;
         VectorModel[] blades = new VectorModel[2];
@@ -57,8 +58,8 @@ namespace Omega_Race.Entities
 
         public void BeginRun()
         {
-            Y = -Core.ScreenHeight / 1.75f;
-            X = Core.ScreenWidth / 1.2f;
+            //X = Core.ScreenWidth / 1.25f;
+            //Y = Core.ScreenHeight / 3.75f;
 
         }
         #endregion

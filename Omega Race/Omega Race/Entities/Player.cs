@@ -21,12 +21,10 @@ namespace Omega_Race.Entities
         float thrustAmount = 26.666f;
         float deceleration = 0.0666f;
         float maxVelocity = 20.666f;
-        Vector3[] dotVerts;
         List<Shot> shotList = new List<Shot>();
         
         #endregion
         #region Properties
-        public Vector3[] DotVerts { set => dotVerts = value; }
 
         #endregion
         #region Constructor
@@ -63,7 +61,7 @@ namespace Omega_Race.Entities
         {
             foreach (Shot shot in shotList)
             {
-                shot.InitializePoints(dotVerts, Color.White, "Player Shot");
+                shot.BeginRun();
             }
 
             flame.AddAsChildOf(this);
@@ -152,7 +150,7 @@ namespace Omega_Race.Entities
 
         void Fire()
         {
-            Vector3 dir = Core.VelocityFromAngleZ(Rotation.Z, 26.66f);
+            Vector3 dir = Core.VelocityFromAngleZ(Rotation.Z, 36.66f);
             Vector3 offset = Core.VelocityFromAngleZ(Rotation.Z, PO.Radius);
 
             foreach (Shot shot in shotList)
@@ -161,6 +159,7 @@ namespace Omega_Race.Entities
                 {
                     //fireSound.Play(0.25f, 0, 0);
                     shot.Spawn(Position + offset, dir + (Velocity * 0.75f), 1.25f);
+                    shot.Rotation = Rotation;
                     break;
                 }
             }

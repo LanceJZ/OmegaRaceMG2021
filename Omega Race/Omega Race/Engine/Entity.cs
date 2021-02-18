@@ -81,11 +81,10 @@ namespace Panther
 
         public new bool Enabled
         {
-            get => base.Enabled;
+            get => base.Enabled && _PO.Enabled;
             set
             {
                 base.Enabled = value;
-                Visible = value;
                 _PO.Enabled = value;
             }
         }
@@ -115,6 +114,10 @@ namespace Panther
             base.Initialize();
         }
         #endregion
+        protected override void LoadContent()
+        {
+            base.LoadContent();
+        }
         #region Update
         public override void Update(GameTime gameTime)
         {

@@ -47,6 +47,11 @@ namespace Panther
             Enabled = true;
         }
 
+        protected override void LoadContent()
+        {
+            base.LoadContent();
+        }
+
         public override void Update(GameTime gameTime)
         {
             if (Enabled)
@@ -215,6 +220,11 @@ namespace Panther
 
         public float InitializePoints(Vector3[] pointPositions, Color color, float scale, string name)
         {
+            if (pointPositions == null)
+            {
+                return 0;
+            }
+
             if (pointPositions.Length == 0)
             {
                 return 0;

@@ -35,7 +35,7 @@ namespace Panther
         bool _explosionActive;
         bool _isPaused;
         bool _isMoveable = true;
-        bool _isActiveDependent;
+        bool _isActiveDependent = true;
         bool _isDirectConnected;
         bool _isParent;
         bool _isChild;

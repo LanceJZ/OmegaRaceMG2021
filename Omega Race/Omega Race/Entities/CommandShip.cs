@@ -9,21 +9,25 @@ using System.Linq;
 
 namespace Omega_Race.Entities
 {
-    public class CommandShip : VectorModel
+    public class CommandShip : DroidShip
     {
+        //Drops mines every few seconds.
         #region Fields
-        Camera cameraRef;
         VectorModel inside;
+        Shot shot;
+        Timer shotTimer;
         Color color = new Color(190, 190, 255);
+        bool leader = true;
         #endregion
         #region Properties
-
+        public bool Leader { set => leader = value; }
         #endregion
         #region Constructor
         public CommandShip(Game game, Camera camera) : base(game, camera)
         {
-            cameraRef = camera;
             inside = new VectorModel(game, camera);
+            shot = new Shot(game, camera);
+            shotTimer = new Timer(game, 3);
         }
         #endregion
         #region Initialize-Load-BeginRun
@@ -31,8 +35,6 @@ namespace Omega_Race.Entities
         {
             base.Initialize();
             inside.AddAsChildOf(this, false, false);
-
-            PO.RotationVelocity.Z = Core.RandomMinMax(1, 2.5f);
         }
 
         protected override void LoadContent()
@@ -43,10 +45,10 @@ namespace Omega_Race.Entities
             inside.LoadVectorModel("InsideEnemy", color);
         }
 
-        public void BeginRun()
+        public new void BeginRun()
         {
-            Y = -Core.ScreenHeight / 1.2f;
-            X = Core.ScreenWidth / 1.4f;
+            //base.BeginRun();
+            shot.BeginRun();
 
         }
         #endregion
@@ -55,11 +57,57 @@ namespace Omega_Race.Entities
         {
             base.Update(gameTime);
 
+            if (leader)
+            {
+                LeadGaurd();
+            }
+            else
+            {
+                RearGaurd();
+            }
+
         }
         #endregion
         #region Public Methods
         #endregion
         #region Private Methods
+        void LeadGaurd()
+        {
+            if (shotTimer.Elapsed)
+            {
+                shotTimer.Reset();
+                Fire();
+            }
+        }
+
+        void RearGaurd()
+        {
+
+        }
+
+        void Fire()
+        {
+            float angle = AimedFire();
+            Vector3 dir = Core.VelocityFromAngleZ(angle, 16.66f);
+            Vector3 offset = Core.VelocityFromAngleZ(angle, PO.Radius);
+
+            //fireSound.Play(0.25f, 0, 0);
+            shot.Spawn(Position + offset, dir, 1.25f);
+            shot.PO.Rotation.Z = angle;
+        }
         #endregion
+        float AimedFire()
+        {
+            float percentChance = 0.25f - (Main.instance.Score * 0.00001f);
+
+            if (percentChance < 0)
+            {
+                percentChance = 0;
+            }
+
+            return PO.AngleFromVectorsZ(Main.instance.ThePlayer.Position) +
+                Core.RandomMinMax(-percentChance, percentChance);
+        }
+
     }
 }

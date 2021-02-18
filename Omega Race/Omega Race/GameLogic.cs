@@ -35,6 +35,10 @@ namespace Omega_Race
         VectorModel bottomInsideLine;
         VectorModel leftInsideLine;
         VectorModel rightInsideLine;
+        VectorModel topLine;
+        VectorModel bottomLine;
+        VectorModel leftLine;
+        VectorModel rightLine;
         Timer highScoreListTimer;
         FileIO fileIO;
 
@@ -47,7 +51,6 @@ namespace Omega_Race
         SpriteFont hyper16Font;
         SpriteFont hyper8Font;
         SoundEffect bonusSound;
-        Vector3[] dotVerts;
         Vector2 insideUpperLeft;
         Vector2 insideLowerRight;
         Vector2 outsideUpperLeft;
@@ -119,6 +122,10 @@ namespace Omega_Race
             bottomInsideLine = new VectorModel(Game, camera);
             leftInsideLine = new VectorModel(Game, camera);
             rightInsideLine = new VectorModel(Game, camera);
+            topLine = new VectorModel(Game, camera);
+            bottomLine = new VectorModel(Game, camera);
+            leftLine = new VectorModel(Game, camera);
+            rightLine = new VectorModel(Game, camera);
 
             highScoreListTimer = new Timer(game);
             fileIO = new FileIO();
@@ -156,24 +163,34 @@ namespace Omega_Race
             float vertLineSize = insideUpperLeft.Y;
             Vector3[] horzLineVertex = { new Vector3(horzLineSize, 0, 0), new Vector3(-horzLineSize, 0, 0) };
             Vector3[] vertLineVertex = { new Vector3(0, vertLineSize, 0), new Vector3(0, -vertLineSize, 0) };
-            topInsideLine.InitializePoints(horzLineVertex, Color.Gray, "TopLine");
-            bottomInsideLine.InitializePoints(horzLineVertex, Color.Gray, "BottomLine");
-            leftInsideLine.InitializePoints(vertLineVertex, Color.Gray, "LeftLine");
-            rightInsideLine.InitializePoints(vertLineVertex, Color.Gray, "RightLine");
+            topInsideLine.InitializePoints(horzLineVertex, Color.Gray, "Top Inside Line");
+            bottomInsideLine.InitializePoints(horzLineVertex, Color.Gray, "Bottom Inside Line");
+            leftInsideLine.InitializePoints(vertLineVertex, Color.Gray, "Left Inside Line");
+            rightInsideLine.InitializePoints(vertLineVertex, Color.Gray, "Right Inside Line");
             topInsideLine.Y = insideUpperLeft.Y;
             bottomInsideLine.Y = insideLowerRight.Y;
             leftInsideLine.X = insideUpperLeft.X;
             rightInsideLine.X = insideLowerRight.X;
+            Vector3[] outsideHorzLineVertix = { new Vector3(-Core.ScreenWidth / 1.01f, 0, 0),
+                new Vector3(Core.ScreenWidth / 1.01f, 0, 0) };
+            Vector3[] outsideVertLineVertex = { new Vector3(0, Core.ScreenHeight / 1.01f, 0),
+                new Vector3(0, -Core.ScreenHeight / 1.01f, 0) };
+            topLine.InitializePoints(outsideHorzLineVertix, Color.Gray, "Top Line");
+            bottomLine.InitializePoints(outsideHorzLineVertix, Color.Gray, "Bottom Line");
+            leftLine.InitializePoints(outsideVertLineVertex, Color.Gray, "Left Line");
+            rightLine.InitializePoints(outsideVertLineVertex, Color.Gray, "Right Line");
+            topLine.Y = Core.ScreenHeight / 1.01f;
+            bottomLine.Y = -Core.ScreenHeight / 1.01f;
+            leftLine.X = -Core.ScreenWidth / 1.01f;
+            rightLine.X = Core.ScreenWidth / 1.01f;
         }
 
         public void LoadContent()
         {
-
             hyper20Font = Game.Content.Load<SpriteFont>("Hyperspace20");
             hyper16Font = Game.Content.Load<SpriteFont>("Hyperspace16");
             hyper8Font = Game.Content.Load<SpriteFont>("Hyperspace8");
-
-            dotVerts = fileIO.ReadVectorModelFile("Dot");
+            enemyController.LoadContent();
         }
 
         public void BeginRun()
@@ -200,12 +217,13 @@ namespace Omega_Race
             scoreBoardPostion.X = Core.WindowWidth / 1.95f - hyper16Font.MeasureString(scoreBoardText).X;
             PlayerScore(0);
             //ScoreZero();
-            player.DotVerts = dotVerts;
             player.BeginRun();
             enemyController.BeginRun();
 
             lives = 4;
             PlayerShipDesplay();
+
+            enemyController.NewWave();
         }
 
         public void UnloadContent()
