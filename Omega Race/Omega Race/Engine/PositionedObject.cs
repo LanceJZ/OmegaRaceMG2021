@@ -229,7 +229,7 @@ namespace Panther
         {
             ChildrenPOs = new List<PositionedObject>();
             ParentPOs = new List<PositionedObject>();
-            Game.Components.Add(this);
+            game.Components.Add(this);
         }
         #endregion
         #region Public Methods

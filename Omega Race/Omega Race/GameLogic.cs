@@ -50,7 +50,15 @@ namespace Omega_Race
         SpriteFont hyper20Font;
         SpriteFont hyper16Font;
         SpriteFont hyper8Font;
-        SoundEffect bonusSound;
+        //SoundEffect bonusSound;
+        AABB insideTopCollusion;
+        AABB insideBottomCollusion;
+        AABB insideLeftCollusion;
+        AABB insideRightCollusion;
+        AABB outsideTopCollusion;
+        AABB outsideBottomCollusion;
+        AABB outsideLeftCollusion;
+        AABB outsideRightCollusion;
         Vector2 insideUpperLeft;
         Vector2 insideLowerRight;
         Vector2 outsideUpperLeft;
@@ -106,6 +114,14 @@ namespace Omega_Race
             Small,
             Large
         }
+        public AABB InsideTopCollusion { get => insideTopCollusion; }
+        public AABB InsideBottomCollusion { get => insideBottomCollusion; }
+        public AABB InsideLeftCollusion { get => insideLeftCollusion; }
+        public AABB InsideRightCollusion { get => insideRightCollusion; }
+        public AABB OutsideTopCollusion { get => outsideTopCollusion; }
+        public AABB OutsideBottomCollusion { get => outsideBottomCollusion; }
+        public AABB OutsideLeftCollusion { get => outsideLeftCollusion; }
+        public AABB OutsideRightCollusion { get => outsideRightCollusion; }
 
         public GameLogic(Game game) : base(game)
         {
@@ -129,6 +145,15 @@ namespace Omega_Race
 
             highScoreListTimer = new Timer(game);
             fileIO = new FileIO();
+
+            insideTopCollusion = new AABB();
+            insideBottomCollusion = new AABB();
+            insideLeftCollusion = new AABB();
+            insideRightCollusion = new AABB();
+            outsideTopCollusion = new AABB();
+            outsideBottomCollusion = new AABB();
+            outsideLeftCollusion = new AABB();
+            outsideRightCollusion = new AABB();
 
             player = new Player(game, camera);
             enemyController = new EnemyController(game, camera);
@@ -183,6 +208,32 @@ namespace Omega_Race
             bottomLine.Y = -Core.ScreenHeight / 1.01f;
             leftLine.X = -Core.ScreenWidth / 1.01f;
             rightLine.X = Core.ScreenWidth / 1.01f;
+
+            float size = 0.5f;
+            insideLeftCollusion.X = InsideUpperLeft.X;
+            insideLeftCollusion.Width = size;
+            insideLeftCollusion.Height = InsideUpperLeft.Y;
+            insideTopCollusion.Y = InsideUpperLeft.Y;
+            insideTopCollusion.Height = size;
+            insideTopCollusion.Width = InsideLowerRight.X;
+            insideRightCollusion.X = InsideLowerRight.X;
+            insideRightCollusion.Width = size;
+            insideRightCollusion.Height = InsideUpperLeft.Y;
+            insideBottomCollusion.Y = InsideLowerRight.Y;
+            insideBottomCollusion.Height = size;
+            insideBottomCollusion.Width = InsideLowerRight.X;
+            outsideLeftCollusion.X = leftLine.X;
+            outsideLeftCollusion.Width = size;
+            outsideLeftCollusion.Height = Core.ScreenHeight;
+            outsideTopCollusion.Y = topLine.Y;
+            outsideTopCollusion.Height = size;
+            outsideTopCollusion.Width = Core.ScreenWidth;
+            outsideRightCollusion.X = rightLine.X;
+            outsideRightCollusion.Width = size;
+            outsideRightCollusion.Height = Core.ScreenWidth;
+            outsideBottomCollusion.Y = bottomLine.Y;
+            outsideBottomCollusion.Height = size;
+            outsideBottomCollusion.Width = Core.ScreenWidth;
         }
 
         public void LoadContent()
@@ -329,7 +380,7 @@ namespace Omega_Race
 
             if (score > bonusLifeScore)
             {
-                bonusSound.Play();
+                //bonusSound.Play();
                 lives++;
                 bonusLifeScore += bonusLifeAmount;
                 PlayerShipDesplay();

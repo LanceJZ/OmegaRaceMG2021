@@ -92,8 +92,7 @@ namespace Omega_Race.Entities
             Vector3 offset = Core.VelocityFromAngleZ(angle, PO.Radius);
 
             //fireSound.Play(0.25f, 0, 0);
-            shot.Spawn(Position + offset, dir, 1.25f);
-            shot.PO.Rotation.Z = angle;
+            shot.Spawn(Position + offset, new Vector3(0, 0, angle), dir, 1.25f);
         }
         #endregion
         float AimedFire()

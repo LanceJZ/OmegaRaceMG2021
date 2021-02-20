@@ -20,6 +20,8 @@ namespace Omega_Race
         DeathShip death;
         Vector3[] droidmodelFile;
         Color color = new Color(190, 190, 255);
+        float count = 5;
+
         #endregion
         #region Properties
         #endregion
@@ -54,10 +56,11 @@ namespace Omega_Race
         {
             leadCommand.BeginRun();
             leadCommand.Leader = true;
-            rearCommand.BeginRun();
+            rearCommand.BeginRun(); //Takes five seconds after wave start to appear. Drops mines. Turns into Death ship.
             rearCommand.Enabled = false;
             death.BeginRun();
             death.Enabled = false;
+
         }
         #endregion
         #region Update
@@ -78,7 +81,6 @@ namespace Omega_Race
             float edgeX = Main.instance.InsideLowerRight.X - 0.95f;
             float inedgeY = Main.instance.InsideUpperLeft.Y + 1.15f;
             float outedgeY = Core.ScreenHeight - 1.15f;
-            float count = 11;
 
             int side = Core.RandomMinMax(1, 4);
             leadCommand.Y = -Core.ScreenHeight / 2.75f;

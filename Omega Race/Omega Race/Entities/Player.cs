@@ -75,7 +75,8 @@ namespace Omega_Race.Entities
         {
             base.Update(gameTime);
 
-            HitBoundry();
+            CheckOutsideBoundry();
+            CheckInsideBoundry();
             GetKeys();
         }
         #endregion
@@ -158,10 +159,17 @@ namespace Omega_Race.Entities
                 if (!shot.Enabled)
                 {
                     //fireSound.Play(0.25f, 0, 0);
-                    shot.Spawn(Position + offset, dir + (Velocity * 0.75f), 1.25f);
-                    shot.Rotation = Rotation;
+                    shot.Spawn(Position + offset, Rotation, dir + (Velocity * 0.75f), 1.25f);
                     break;
                 }
+            }
+        }
+
+        void CheckShotCollusions()
+        {
+            foreach(Shot shot in shotList)
+            {
+
             }
         }
         #endregion

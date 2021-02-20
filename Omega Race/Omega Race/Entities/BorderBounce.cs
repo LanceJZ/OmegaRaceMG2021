@@ -46,49 +46,61 @@ namespace Omega_Race.Entities
         #region Public Methods
         #endregion
         #region Protected Methods
-        protected void HitBoundry()
+        protected void CheckInsideBoundry()
         {
-            if (PO.OffScreenTopBottom())
+            if (Main.instance.InsideTopCollusion.Contains(Position))
+            {
+                PO.Velocity.Y = BoundryBounce(Velocity.Y);
+                MoveFromBoundryY();
+            }
+
+            if (Main.instance.InsideBottomCollusion.Contains(Position))
+            {
+                PO.Velocity.Y = BoundryBounce(Velocity.Y);
+                MoveFromBoundryY();
+            }
+
+            if (Main.instance.InsideLeftCollusion.Contains(Position))
+            {
+                PO.Velocity.X = BoundryBounce(Velocity.X);
+                MoveFromBoundryX();
+            }
+
+            if (Main.instance.InsideRightCollusion.Contains(Position))
+            {
+                PO.Velocity.X = BoundryBounce(Velocity.X);
+                MoveFromBoundryX();
+            }
+        }
+
+        protected void CheckOutsideBoundry()
+        {
+            if (Main.instance.OutsideTopCollusion.Contains(Position))
             {
                 PO.Velocity.Y = BoundryBounce(Velocity.Y);
                 MoveFromBoundryY();
                 return;
             }
-            else if (PO.OffScreenSide())
+
+            if (Main.instance.OutsideBottomCollusion.Contains(Position))
+            {
+                PO.Velocity.Y = BoundryBounce(Velocity.Y);
+                MoveFromBoundryY();
+                return;
+            }
+
+            if (Main.instance.OutsideLeftCollusion.Contains(Position))
             {
                 PO.Velocity.X = BoundryBounce(Velocity.X);
                 MoveFromBoundryX();
                 return;
             }
 
-            float upperY = Main.instance.InsideUpperLeft.Y;
-            float lowerY = Main.instance.InsideLowerRight.Y;
-            float leftX = Main.instance.InsideUpperLeft.X;
-            float rightX = Main.instance.InsideLowerRight.X;
-
-            if (Y - PO.Radius < upperY && Y + PO.Radius > lowerY)
+            if (Main.instance.OutsideRightCollusion.Contains(Position))
             {
-                if (X - PO.Radius < rightX && X + PO.Radius > leftX)
-                {
-                    float buffer = 0.75f;
-
-                    if (Y - PO.Radius * buffer < upperY && Y + PO.Radius * buffer > lowerY)
-                    {
-                        PO.Velocity.X = BoundryBounce(Velocity.X);
-                        MoveFromBoundryX();
-                    }
-                    else
-                    {
-                        PO.Velocity.Y = BoundryBounce(Velocity.Y);
-                        MoveFromBoundryY();
-                    }
-
-                    if (Y - PO.Radius * 1.1f < upperY && Y + PO.Radius * 1.1f > lowerY)
-                    {
-                        PO.Velocity.Y = BoundryBounce(Velocity.Y);
-                        MoveFromBoundryY();
-                    }
-                }
+                PO.Velocity.X = BoundryBounce(Velocity.X);
+                MoveFromBoundryX();
+                return;
             }
         }
         #endregion
