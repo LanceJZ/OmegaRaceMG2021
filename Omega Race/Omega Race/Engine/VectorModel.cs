@@ -281,6 +281,8 @@ namespace Panther
                     PO.Radius = Math.Abs(pointPositions[i].Y);
             }
 
+            PO.BoundingBox = new AABB(PO.Radius, PO.Radius);
+
             return PO.Radius * scale;
         }
         /// <summary>

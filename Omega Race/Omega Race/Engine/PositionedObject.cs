@@ -26,6 +26,7 @@ namespace Panther
         Vector3 _childPosition;
         Vector3 _orginalPosition;
         Vector2 _heightWidth;
+        AABB _aabb;
         float _elapsedGameTime;
         float _scalePercent = 1;
         float _gameRefScale = 1;
@@ -205,20 +206,13 @@ namespace Panther
         /// Gets or sets the GameModel's AABB
         /// </summary>
         public bool Debug { set => _inDebugMode = value; }
-
         public Vector2 WidthHeight { get => _heightWidth; set => _heightWidth = value; }
-
         public float GameScale { get => _gameRefScale; set => _gameRefScale = value; }
-
-        public Rectangle BoundingBox
-        {
-            get => new Rectangle((int)Position.X, (int)Position.Y, (int)WidthHeight.X, (int)WidthHeight.Y);
-        }
-
         public float X { get => Position.X; set => Position.X = value; }
         public float Y { get => Position.Y; set => Position.Y = value; }
         public float Z { get => Position.Z; set => Position.Z = value; }
         public bool NewSpawn { get => _newSpawn; set => _newSpawn = value; }
+        public AABB BoundingBox { get => _aabb; set => _aabb = value; }
         #endregion
         #region Constructor
         /// <summary>
@@ -229,6 +223,7 @@ namespace Panther
         {
             ChildrenPOs = new List<PositionedObject>();
             ParentPOs = new List<PositionedObject>();
+            _aabb = new AABB();
             game.Components.Add(this);
         }
         #endregion
@@ -252,7 +247,8 @@ namespace Panther
                 Position += Velocity * _elapsedGameTime;
                 RotationVelocity += RotationAcceleration * _elapsedGameTime;
                 Rotation += RotationVelocity * _elapsedGameTime;
-
+                _aabb.X = X;
+                _aabb.Y = Y;
                 Rotation = WrapAngle(Rotation);
             }
 

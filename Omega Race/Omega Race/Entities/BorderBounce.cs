@@ -79,40 +79,36 @@ namespace Omega_Race.Entities
             {
                 PO.Velocity.Y = BoundryBounce(Velocity.Y);
                 MoveFromBoundryY();
-                return;
             }
 
             if (Main.instance.OutsideBottomCollusion.Contains(Position))
             {
                 PO.Velocity.Y = BoundryBounce(Velocity.Y);
                 MoveFromBoundryY();
-                return;
             }
 
             if (Main.instance.OutsideLeftCollusion.Contains(Position))
             {
                 PO.Velocity.X = BoundryBounce(Velocity.X);
                 MoveFromBoundryX();
-                return;
             }
 
             if (Main.instance.OutsideRightCollusion.Contains(Position))
             {
                 PO.Velocity.X = BoundryBounce(Velocity.X);
                 MoveFromBoundryX();
-                return;
             }
         }
         #endregion
         #region Private Methods
         void MoveFromBoundryX()
         {
-            PO.Position.X += PO.Velocity.X * 0.1f;
+            PO.Position.X += PO.Velocity.X * 0.05f;
         }
 
         void MoveFromBoundryY()
         {
-            PO.Position.Y += PO.Velocity.Y * 0.1f;
+            PO.Position.Y += PO.Velocity.Y * 0.05f;
         }
 
         float BoundryBounce(float velocity)

@@ -38,7 +38,7 @@ namespace Panther
         }
         #endregion
         #region Constructor
-        public AABB(Game game, float width, float height)
+        public AABB(float width, float height)
         {
             Width = width;
             Height = height;
@@ -46,7 +46,7 @@ namespace Panther
             Y = 0;
         }
 
-        public AABB(Game game, float x, float y, float width, float height)
+        public AABB(float x, float y, float width, float height)
         {
             Width = width;
             Height = height;
