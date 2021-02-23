@@ -31,18 +31,11 @@ namespace Omega_Race
     {
         Camera camera;
         VectorModel cross;
-        VectorModel topInsideLine;
-        VectorModel bottomInsideLine;
-        VectorModel leftInsideLine;
-        VectorModel rightInsideLine;
-        VectorModel topLine;
-        VectorModel bottomLine;
-        VectorModel leftLine;
-        VectorModel rightLine;
         Timer highScoreListTimer;
         FileIO fileIO;
 
         Player player;
+        BorderController borderController;
         EnemyController enemyController;
         List<VectorModel> playerShipModels = new List<VectorModel>();
 
@@ -51,18 +44,6 @@ namespace Omega_Race
         SpriteFont hyper16Font;
         SpriteFont hyper8Font;
         //SoundEffect bonusSound;
-        AABB insideTopCollusion;
-        AABB insideBottomCollusion;
-        AABB insideLeftCollusion;
-        AABB insideRightCollusion;
-        AABB outsideTopCollusion;
-        AABB outsideBottomCollusion;
-        AABB outsideLeftCollusion;
-        AABB outsideRightCollusion;
-        Vector2 insideUpperLeft;
-        Vector2 insideLowerRight;
-        Vector2 outsideUpperLeft;
-        Vector2 outsideLowerRight;
         Vector2 scorePosition = new Vector2();
         Vector2 scoreBoardPostion = new Vector2();
         Vector2 highScorePosition = new Vector2();
@@ -98,10 +79,9 @@ namespace Omega_Race
         public uint Score { get => score; }
         public uint Wave { get => wave; set => wave = value; }
         public int Lives { get => lives; }
-        public Vector2 InsideUpperLeft { get => insideUpperLeft; }
-        public Vector2 InsideLowerRight { get => insideLowerRight; }
         public Player ThePlayer { get => player; }
         public EnemyController TheEnemies { get => enemyController; }
+        public BorderController TheBorders { get => borderController; }
         public enum RockSize
         {
             Small,
@@ -114,15 +94,6 @@ namespace Omega_Race
             Small,
             Large
         }
-        public AABB InsideTopCollusion { get => insideTopCollusion; }
-        public AABB InsideBottomCollusion { get => insideBottomCollusion; }
-        public AABB InsideLeftCollusion { get => insideLeftCollusion; }
-        public AABB InsideRightCollusion { get => insideRightCollusion; }
-        public AABB OutsideTopCollusion { get => outsideTopCollusion; }
-        public AABB OutsideBottomCollusion { get => outsideBottomCollusion; }
-        public AABB OutsideLeftCollusion { get => outsideLeftCollusion; }
-        public AABB OutsideRightCollusion { get => outsideRightCollusion; }
-
         public GameLogic(Game game) : base(game)
         {
             // Screen resolution is 1200 X 900.
@@ -134,29 +105,13 @@ namespace Omega_Race
             camera = new Camera(game, new Vector3(0, 0, 50), new Vector3(0, MathHelper.Pi, 0),
                 Core.Graphics.Viewport.AspectRatio, 1f, 1000);
             cross = new VectorModel(Game, camera);
-            topInsideLine = new VectorModel(Game, camera);
-            bottomInsideLine = new VectorModel(Game, camera);
-            leftInsideLine = new VectorModel(Game, camera);
-            rightInsideLine = new VectorModel(Game, camera);
-            topLine = new VectorModel(Game, camera);
-            bottomLine = new VectorModel(Game, camera);
-            leftLine = new VectorModel(Game, camera);
-            rightLine = new VectorModel(Game, camera);
 
             highScoreListTimer = new Timer(game);
             fileIO = new FileIO();
 
-            insideTopCollusion = new AABB();
-            insideBottomCollusion = new AABB();
-            insideLeftCollusion = new AABB();
-            insideRightCollusion = new AABB();
-            outsideTopCollusion = new AABB();
-            outsideBottomCollusion = new AABB();
-            outsideLeftCollusion = new AABB();
-            outsideRightCollusion = new AABB();
-
             player = new Player(game, camera);
             enemyController = new EnemyController(game, camera);
+            borderController = new BorderController(game, camera);
 
             game.Components.Add(this);
         }
@@ -179,61 +134,6 @@ namespace Omega_Race
             Core.ScreenWidth = 27.63705f;
             Core.ScreenHeight = 20.711943f;
 
-            insideUpperLeft.X = -Core.ScreenWidth / 1.6f;
-            insideUpperLeft.Y = Core.ScreenHeight / 4;
-            insideLowerRight.X = Core.ScreenWidth / 1.6f;
-            insideLowerRight.Y = -Core.ScreenHeight / 4;
-
-            float horzLineSize = insideUpperLeft.X;
-            float vertLineSize = insideUpperLeft.Y;
-            Vector3[] horzLineVertex = { new Vector3(horzLineSize, 0, 0), new Vector3(-horzLineSize, 0, 0) };
-            Vector3[] vertLineVertex = { new Vector3(0, vertLineSize, 0), new Vector3(0, -vertLineSize, 0) };
-            topInsideLine.InitializePoints(horzLineVertex, Color.Gray, "Top Inside Line");
-            bottomInsideLine.InitializePoints(horzLineVertex, Color.Gray, "Bottom Inside Line");
-            leftInsideLine.InitializePoints(vertLineVertex, Color.Gray, "Left Inside Line");
-            rightInsideLine.InitializePoints(vertLineVertex, Color.Gray, "Right Inside Line");
-            topInsideLine.Y = insideUpperLeft.Y;
-            bottomInsideLine.Y = insideLowerRight.Y;
-            leftInsideLine.X = insideUpperLeft.X;
-            rightInsideLine.X = insideLowerRight.X;
-            Vector3[] outsideHorzLineVertix = { new Vector3(-Core.ScreenWidth / 1.01f, 0, 0),
-                new Vector3(Core.ScreenWidth / 1.01f, 0, 0) };
-            Vector3[] outsideVertLineVertex = { new Vector3(0, Core.ScreenHeight / 1.01f, 0),
-                new Vector3(0, -Core.ScreenHeight / 1.01f, 0) };
-            topLine.InitializePoints(outsideHorzLineVertix, Color.Gray, "Top Line");
-            bottomLine.InitializePoints(outsideHorzLineVertix, Color.Gray, "Bottom Line");
-            leftLine.InitializePoints(outsideVertLineVertex, Color.Gray, "Left Line");
-            rightLine.InitializePoints(outsideVertLineVertex, Color.Gray, "Right Line");
-            topLine.Y = Core.ScreenHeight / 1.01f;
-            bottomLine.Y = -Core.ScreenHeight / 1.01f;
-            leftLine.X = -Core.ScreenWidth / 1.01f;
-            rightLine.X = Core.ScreenWidth / 1.01f;
-
-            float size = 0.5f;
-            insideLeftCollusion.X = InsideUpperLeft.X;
-            insideLeftCollusion.Width = size;
-            insideLeftCollusion.Height = InsideUpperLeft.Y;
-            insideTopCollusion.Y = InsideUpperLeft.Y;
-            insideTopCollusion.Height = size;
-            insideTopCollusion.Width = InsideLowerRight.X;
-            insideRightCollusion.X = InsideLowerRight.X;
-            insideRightCollusion.Width = size;
-            insideRightCollusion.Height = InsideUpperLeft.Y;
-            insideBottomCollusion.Y = InsideLowerRight.Y;
-            insideBottomCollusion.Height = size;
-            insideBottomCollusion.Width = InsideLowerRight.X;
-            outsideLeftCollusion.X = leftLine.X;
-            outsideLeftCollusion.Width = size;
-            outsideLeftCollusion.Height = Core.ScreenHeight;
-            outsideTopCollusion.Y = topLine.Y;
-            outsideTopCollusion.Height = size;
-            outsideTopCollusion.Width = Core.ScreenWidth;
-            outsideRightCollusion.X = rightLine.X;
-            outsideRightCollusion.Width = size;
-            outsideRightCollusion.Height = Core.ScreenWidth;
-            outsideBottomCollusion.Y = bottomLine.Y;
-            outsideBottomCollusion.Height = size;
-            outsideBottomCollusion.Width = Core.ScreenWidth;
         }
 
         public void LoadContent()
@@ -242,6 +142,7 @@ namespace Omega_Race
             hyper16Font = Game.Content.Load<SpriteFont>("Hyperspace16");
             hyper8Font = Game.Content.Load<SpriteFont>("Hyperspace8");
             enemyController.LoadContent();
+            borderController.LoadContent();
         }
 
         public void BeginRun()
@@ -259,17 +160,18 @@ namespace Omega_Race
             highScoreListPosition = new Vector2(Core.WindowWidth / 2.75f, Core.WindowHeight / 4.25f);
             highScoreInstructionsPosition = new Vector2(50, Core.WindowHeight / 4);
             highScoreLettersPosition = new Vector2(Core.WindowWidth / 2.25f, Core.WindowHeight / 1.25f);
-            highScorePosition.Y = Core.WindowHeight / 1.77f;
-            highScoreBoardPosition.Y = Core.WindowHeight / 1.85f;
+            highScorePosition.Y = Core.WindowHeight / 1.85f;
+            highScoreBoardPosition.Y = Core.WindowHeight / 1.95f;
             highScoreBoardPosition.X = Core.WindowWidth / 1.95f - 
                 hyper16Font.MeasureString(highScoreBoardText).X;
-            scorePosition.Y = Core.WindowHeight / 2.15f;
-            scoreBoardPostion.Y = Core.WindowHeight / 2.25f;
+            scorePosition.Y = Core.WindowHeight / 2.2f;
+            scoreBoardPostion.Y = Core.WindowHeight / 2.35f;
             scoreBoardPostion.X = Core.WindowWidth / 1.95f - hyper16Font.MeasureString(scoreBoardText).X;
             PlayerScore(0);
             //ScoreZero();
             player.BeginRun();
             enemyController.BeginRun();
+            borderController.BeginRun();
 
             lives = 4;
             PlayerShipDesplay();
@@ -602,8 +504,8 @@ namespace Omega_Race
                 }
             }
 
-            float line = insideUpperLeft.X + (player.PO.Radius * 2);
-            float row = 4;
+            float line = -(borderController.InsideTopCollision.Width / 2) + (player.PO.Radius * 2);
+            float row = 3.25f;
 
             for(int i = 0; i < lives; i++)
             {

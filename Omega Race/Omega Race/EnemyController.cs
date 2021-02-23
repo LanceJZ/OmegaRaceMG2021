@@ -78,8 +78,8 @@ namespace Omega_Race
             //The second command ship in the back turns into the Death ship after a time. It follows the droids.
             //Every five levels you get a bonus of 5000 pts.
             List<Vector3> spawnLocations = new List<Vector3>();
-            float edgeX = Main.instance.InsideLowerRight.X - 0.95f;
-            float inedgeY = Main.instance.InsideUpperLeft.Y + 1.15f;
+            float edgeX = -Core.ScreenWidth / 1.6f - 0.95f;
+            float inedgeY = Core.ScreenHeight / 4;
             float outedgeY = Core.ScreenHeight - 1.15f;
 
             int side = Core.RandomMinMax(1, 4);

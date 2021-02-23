@@ -82,14 +82,14 @@ namespace Panther
 
         public bool Contains(PointFloat value)
         {
-            return (((value.X > (X - Width))) && (value.Y > (Y - Height)) &&
-                (value.X < (X + Width)) && (value.Y < (Y + Height)));
+            return (((value.X > (X - Width / 2))) && (value.Y > (Y - Height / 2)) &&
+                (value.X < (X + Width / 2)) && (value.Y < (Y + Height / 2)));
         }
 
         public bool Contains(AABB value)
         {
-            return ((((X <= value.X) && ((value.X + value.Width) <= (X + Width))) && (Y <= value.Y)) &&
-                ((value.Y + value.Height) <= (Y + Height)));
+            return ((((X <= value.X) && ((value.X + value.Width / 2) <= (X + Width / 2))) && (Y <= value.Y)) &&
+                ((value.Y + value.Height / 2) <= (Y + Height / 2)));
         }
 
         public void Offset(PointFloat offset)

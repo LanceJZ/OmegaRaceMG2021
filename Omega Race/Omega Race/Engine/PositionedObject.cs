@@ -143,7 +143,7 @@ namespace Panther
         /// </summary>
         public float Scale { get => _scalePercent; set => _scalePercent = value; }
         /// <summary>
-        /// Used for circle collusion. Sets radius of circle.
+        /// Used for circle collision. Sets radius of circle.
         /// </summary>
         public float Radius { get => _radius * _scalePercent; set => _radius = value; }
         /// <summary>
@@ -402,7 +402,7 @@ namespace Panther
             Game.Components.Remove(this);
         }
         /// <summary>
-        /// Circle collusion detection. Target circle will be compared to this class's.
+        /// Circle collision detection. Target circle will be compared to this class's.
         /// Will return true of they intersect. Only for use with 2D Z plane.
         /// </summary>
         /// <param name="target">Target Positioned Object.</param>

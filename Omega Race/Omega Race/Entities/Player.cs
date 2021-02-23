@@ -165,7 +165,7 @@ namespace Omega_Race.Entities
             }
         }
 
-        void CheckShotCollusions()
+        void CheckShotCollisions()
         {
             foreach(Shot shot in shotList)
             {

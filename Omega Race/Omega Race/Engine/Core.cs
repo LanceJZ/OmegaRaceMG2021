@@ -435,7 +435,7 @@ namespace Panther
             return position;
         }
         /// <summary>
-        /// Circle collusion detection. Target circle will be compared to this class's.
+        /// Circle collision detection. Target circle will be compared to this class's.
         /// Will return true of they intersect. Only for use with 2D Z plane.
         /// </summary>
         /// <param name="target">Position of target.</param>
@@ -454,7 +454,7 @@ namespace Panther
             return false;
         }
         /// <summary>
-        /// Circle collusion detection. Target circle will be compared to origin circle.
+        /// Circle collision detection. Target circle will be compared to origin circle.
         /// Will return true of they intersect. Only for use with 2D Z plane.
         /// </summary>
         /// <param name="target">Target Positioned Object.</param>

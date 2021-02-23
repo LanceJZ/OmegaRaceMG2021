@@ -48,25 +48,25 @@ namespace Omega_Race.Entities
         #region Protected Methods
         protected void CheckInsideBoundry()
         {
-            if (Main.instance.InsideTopCollusion.Contains(Position))
+            if (Main.instance.TheBorders.InsideTopCollision.Contains(Position))
             {
                 PO.Velocity.Y = BoundryBounce(Velocity.Y);
                 MoveFromBoundryY();
             }
 
-            if (Main.instance.InsideBottomCollusion.Contains(Position))
+            if (Main.instance.TheBorders.InsideBottomCollision.Contains(Position))
             {
                 PO.Velocity.Y = BoundryBounce(Velocity.Y);
                 MoveFromBoundryY();
             }
 
-            if (Main.instance.InsideLeftCollusion.Contains(Position))
+            if (Main.instance.TheBorders.InsideLeftCollision.Contains(Position))
             {
                 PO.Velocity.X = BoundryBounce(Velocity.X);
                 MoveFromBoundryX();
             }
 
-            if (Main.instance.InsideRightCollusion.Contains(Position))
+            if (Main.instance.TheBorders.InsideRightCollision.Contains(Position))
             {
                 PO.Velocity.X = BoundryBounce(Velocity.X);
                 MoveFromBoundryX();
@@ -75,25 +75,25 @@ namespace Omega_Race.Entities
 
         protected void CheckOutsideBoundry()
         {
-            if (Main.instance.OutsideTopCollusion.Contains(Position))
+            if (Main.instance.TheBorders.OutsideTopCollision.Contains(Position))
             {
                 PO.Velocity.Y = BoundryBounce(Velocity.Y);
                 MoveFromBoundryY();
             }
 
-            if (Main.instance.OutsideBottomCollusion.Contains(Position))
+            if (Main.instance.TheBorders.OutsideBottomCollision.Contains(Position))
             {
                 PO.Velocity.Y = BoundryBounce(Velocity.Y);
                 MoveFromBoundryY();
             }
 
-            if (Main.instance.OutsideLeftCollusion.Contains(Position))
+            if (Main.instance.TheBorders.OutsideLeftCollision.Contains(Position))
             {
                 PO.Velocity.X = BoundryBounce(Velocity.X);
                 MoveFromBoundryX();
             }
 
-            if (Main.instance.OutsideRightCollusion.Contains(Position))
+            if (Main.instance.TheBorders.OutsideRightCollision.Contains(Position))
             {
                 PO.Velocity.X = BoundryBounce(Velocity.X);
                 MoveFromBoundryX();

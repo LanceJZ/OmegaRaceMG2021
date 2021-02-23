@@ -55,42 +55,42 @@ namespace Omega_Race.Entities
                 Enabled = false;
             }
 
-            if (Main.instance.InsideTopCollusion.Contains(Position))
+            if (Main.instance.TheBorders.InsideTopCollision.Contains(Position))
             {
                 Enabled = false;
             }
 
-            if (Main.instance.InsideBottomCollusion.Contains(Position))
+            if (Main.instance.TheBorders.InsideBottomCollision.Contains(Position))
             {
                 Enabled = false;
             }
 
-            if (Main.instance.InsideLeftCollusion.Contains(Position))
+            if (Main.instance.TheBorders.InsideLeftCollision.Contains(Position))
             {
                 Enabled = false;
             }
 
-            if (Main.instance.InsideRightCollusion.Contains(Position))
+            if (Main.instance.TheBorders.InsideRightCollision.Contains(Position))
             {
                 Enabled = false;
             }
 
-            if (Main.instance.OutsideTopCollusion.Contains(Position))
+            if (Main.instance.TheBorders.OutsideTopCollision.Contains(Position))
             {
                 Enabled = false;
             }
 
-            if (Main.instance.OutsideBottomCollusion.Contains(Position))
+            if (Main.instance.TheBorders.OutsideBottomCollision.Contains(Position))
             {
                 Enabled = false;
             }
 
-            if (Main.instance.OutsideLeftCollusion.Contains(Position))
+            if (Main.instance.TheBorders.OutsideLeftCollision.Contains(Position))
             {
                 Enabled = false;
             }
 
-            if (Main.instance.OutsideRightCollusion.Contains(Position))
+            if (Main.instance.TheBorders.OutsideRightCollision.Contains(Position))
             {
                 Enabled = false;
             }
