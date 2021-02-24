@@ -16,7 +16,7 @@ namespace Omega_Race.Entities
         VectorModel inside;
         Shot shot;
         Timer shotTimer;
-        Color color = new Color(190, 190, 255);
+        Color color = new Color(180, 180, 255);
         bool leader = true;
         #endregion
         #region Properties

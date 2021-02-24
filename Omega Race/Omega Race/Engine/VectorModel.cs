@@ -14,7 +14,6 @@ namespace Panther
         Camera theCamera;
         FileIO fileIO;
         List<VectorModel> _children = new List<VectorModel>();
-        //Matrix localMatrix;
         VertexPositionColor[] pointList;
         Vector3[] vertexArray;
         VertexBuffer vertexBuffer;
@@ -27,7 +26,12 @@ namespace Panther
         float alpha = 1;
 
         public Vector3[] VertexArray { get => vertexArray; }
-        public Color Color { get => color; set => color = value; }
+        public Vector3 DefuseColor { get => _diffuseColor; set => _diffuseColor = value; }
+        public Color Color 
+        {
+            get => new Color(_diffuseColor.X * 255, _diffuseColor.Y * 255, _diffuseColor.Z *255);
+            set => _diffuseColor = new Vector3(value.R / 255f, value.G / 255f, value.B / 255f);
+        }
         public float Alpha { get => alpha; set => alpha = value; }
         public float ModelScale { get => modelScale; set => modelScale = value; }
         public string Name { get => name; set => name = value; }
@@ -233,6 +237,8 @@ namespace Panther
             this.name = name;
             vertexArray = pointPositions;
             this.color = color;
+            _diffuseColor = new Vector3(color.R / 255f, color.G / 255f, color.B / 255f);
+            alpha = color.A / 255;
 
             if (scale != 1)
             {

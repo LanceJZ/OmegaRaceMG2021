@@ -58,41 +58,49 @@ namespace Omega_Race.Entities
             if (Main.instance.TheBorders.InsideTopCollision.Contains(Position))
             {
                 Enabled = false;
+                Main.instance.TheBorders.TopInside.Trigger();
             }
 
             if (Main.instance.TheBorders.InsideBottomCollision.Contains(Position))
             {
                 Enabled = false;
+                Main.instance.TheBorders.BottomInside.Trigger();
             }
 
             if (Main.instance.TheBorders.InsideLeftCollision.Contains(Position))
             {
                 Enabled = false;
+                Main.instance.TheBorders.LeftInside.Trigger();
             }
 
             if (Main.instance.TheBorders.InsideRightCollision.Contains(Position))
             {
                 Enabled = false;
+                Main.instance.TheBorders.RightInside.Trigger();
             }
 
             if (Main.instance.TheBorders.OutsideTopCollision.Contains(Position))
             {
                 Enabled = false;
+                Main.instance.TheBorders.TopOutside.Trigger();
             }
 
             if (Main.instance.TheBorders.OutsideBottomCollision.Contains(Position))
             {
                 Enabled = false;
+                Main.instance.TheBorders.BottomOutside.Trigger();
             }
 
             if (Main.instance.TheBorders.OutsideLeftCollision.Contains(Position))
             {
                 Enabled = false;
+                Main.instance.TheBorders.LeftOutside.Trigger();
             }
 
             if (Main.instance.TheBorders.OutsideRightCollision.Contains(Position))
             {
                 Enabled = false;
+                Main.instance.TheBorders.RightOutside.Trigger();
             }
         }
         #endregion

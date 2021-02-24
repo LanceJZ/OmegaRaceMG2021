@@ -66,8 +66,8 @@ namespace Omega_Race.Entities
 
             flame.AddAsChildOf(this);
 
-            Y = Core.ScreenHeight / 1.2f;
-            X = -Core.ScreenWidth / 1.2f;
+            Y = Core.ScreenHeight / 1.75f;
+            PO.Rotation.Z = MathF.PI / 2 + MathF.PI;
         }
         #endregion
         #region Update

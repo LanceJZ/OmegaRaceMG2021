@@ -12,7 +12,10 @@ namespace Omega_Race.Entities
     public class Border : VectorModel
     {
         #region Fields
-        Camera cameraRef;
+        Timer flickerTimer;
+        Timer flashOnTimer;
+        Timer flashOffTimer;
+        bool flickering = false;
 
         #endregion
         #region Properties
@@ -21,7 +24,9 @@ namespace Omega_Race.Entities
         #region Constructor
         public Border(Game game, Camera camera) : base(game, camera)
         {
-            cameraRef = camera;
+            flickerTimer = new Timer(game, 0.5f);
+            flashOnTimer = new Timer(game, 0.15f);
+            flashOffTimer = new Timer(game, 0.1f);
 
         }
         #endregion
@@ -29,7 +34,6 @@ namespace Omega_Race.Entities
         public override void Initialize()
         {
             base.Initialize();
-
         }
 
         protected override void LoadContent()
@@ -40,7 +44,7 @@ namespace Omega_Race.Entities
 
         public void BeginRun()
         {
-
+            DefuseColor = new Vector3(0.5f, 0.5f, 0.5f);
         }
         #endregion
         #region Update
@@ -48,11 +52,47 @@ namespace Omega_Race.Entities
         {
             base.Update(gameTime);
 
+            if (flickering)
+            {
+                if (flickerTimer.Elapsed)
+                {
+                    flickering = false;
+                    Normal();
+                    return;
+                }
+
+                if (flashOnTimer.Elapsed)
+                {
+                    flashOnTimer.Reset();
+                    Bright();
+                    return;
+                }
+
+                if (flashOffTimer.Elapsed)
+                {
+                    flashOffTimer.Reset();
+                    Normal();
+                }
+            }
         }
         #endregion
         #region Public Methods
+        public void Trigger()
+        {
+            flickering = true;
+            flickerTimer.Reset();
+        }
         #endregion
         #region Private Methods
+        void Normal()
+        {
+            DefuseColor = new Vector3(0.5f, 0.5f, 0.5f);
+        }
+
+        void Bright()
+        {
+            DefuseColor = new Vector3(1, 1, 1);
+        }
         #endregion
     }
 }

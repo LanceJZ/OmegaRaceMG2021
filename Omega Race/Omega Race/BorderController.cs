@@ -23,8 +23,6 @@ namespace Omega_Race
         Border rightOutsideLine;
         #endregion
         #region Properties
-        //public Vector2 InsideUpperLeft { get => insideUpperLeft; }
-        //public Vector2 InsideLowerRight { get => insideLowerRight; }
         public AABB InsideTopCollision { get => topInsideLine.PO.BoundingBox; }
         public AABB InsideBottomCollision { get => bottomInsideLine.PO.BoundingBox; }
         public AABB InsideLeftCollision { get => leftInsideLine.PO.BoundingBox; }
@@ -33,9 +31,17 @@ namespace Omega_Race
         public AABB OutsideBottomCollision { get => bottomOutsideLine.PO.BoundingBox; }
         public AABB OutsideLeftCollision { get => leftOutsideLine.PO.BoundingBox; }
         public AABB OutsideRightCollision { get => rightOutsideLine.PO.BoundingBox; }
-
+        public Border TopInside { get => topInsideLine; }
+        public Border BottomInside { get => bottomInsideLine; }
+        public Border LeftInside { get => leftInsideLine; }
+        public Border RightInside { get => rightInsideLine; }
+        public Border TopOutside { get => topOutsideLine; }
+        public Border BottomOutside { get => bottomOutsideLine; }
+        public Border LeftOutside { get => leftOutsideLine; }
+        public Border RightOutside { get => rightOutsideLine; }
         #endregion
         #region Constructor
+        // TODO: Make blinking borders, when hit it blinks.
         public BorderController(Game game, Camera camera) : base(game)
         {
             topInsideLine = new Border(Game, camera);
@@ -79,18 +85,28 @@ namespace Omega_Race
             float vertLineSize = topInsideLine.Y;
             Vector3[] horzLineVertex = { new Vector3(horzLineSize, 0, 0), new Vector3(-horzLineSize, 0, 0) };
             Vector3[] vertLineVertex = { new Vector3(0, vertLineSize, 0), new Vector3(0, -vertLineSize, 0) };
-            topInsideLine.InitializePoints(horzLineVertex, Color.Gray, "Top Inside Line");
-            bottomInsideLine.InitializePoints(horzLineVertex, Color.Gray, "Bottom Inside Line");
-            leftInsideLine.InitializePoints(vertLineVertex, Color.Gray, "Left Inside Line");
-            rightInsideLine.InitializePoints(vertLineVertex, Color.Gray, "Right Inside Line");
             Vector3[] outsideHorzLineVertix = { new Vector3(-Core.ScreenWidth / 1.01f, 0, 0),
                 new Vector3(Core.ScreenWidth / 1.01f, 0, 0) };
             Vector3[] outsideVertLineVertex = { new Vector3(0, Core.ScreenHeight / 1.01f, 0),
                 new Vector3(0, -Core.ScreenHeight / 1.01f, 0) };
-            topOutsideLine.InitializePoints(outsideHorzLineVertix, Color.Gray, "Top Line");
-            bottomOutsideLine.InitializePoints(outsideHorzLineVertix, Color.Gray, "Bottom Line");
-            leftOutsideLine.InitializePoints(outsideVertLineVertex, Color.Gray, "Left Line");
-            rightOutsideLine.InitializePoints(outsideVertLineVertex, Color.Gray, "Right Line");
+
+            topInsideLine.InitializePoints(horzLineVertex, "Top Inside Line");
+            bottomInsideLine.InitializePoints(horzLineVertex, "Bottom Inside Line");
+            leftInsideLine.InitializePoints(vertLineVertex, "Left Inside Line");
+            rightInsideLine.InitializePoints(vertLineVertex, "Right Inside Line");
+            topOutsideLine.InitializePoints(outsideHorzLineVertix, "Top Line");
+            bottomOutsideLine.InitializePoints(outsideHorzLineVertix, "Bottom Line");
+            leftOutsideLine.InitializePoints(outsideVertLineVertex, "Left Line");
+            rightOutsideLine.InitializePoints(outsideVertLineVertex, "Right Line");
+
+            topInsideLine.BeginRun();
+            bottomInsideLine.BeginRun();
+            leftInsideLine.BeginRun();
+            rightInsideLine.BeginRun();
+            topOutsideLine.BeginRun();
+            bottomOutsideLine.BeginRun();
+            leftOutsideLine.BeginRun();
+            rightOutsideLine.BeginRun();
 
             leftInsideLine.PO.BoundingBox = new AABB(size, (topInsideLine.Y * 2) + size);
             rightInsideLine.PO.BoundingBox = new AABB(size, (topInsideLine.Y * 2) + size);
@@ -110,45 +126,6 @@ namespace Omega_Race
         }
         #endregion
         #region Public Methods
-        public void OutsideTopHit()
-        {
-
-        }
-
-        public void OutsideRightHit()
-        {
-
-        }
-
-        public void OutsideBottomHit()
-        {
-
-        }
-
-        public void OutsideLeftHit()
-        {
-
-        }
-
-        public void InsideTopHit()
-        {
-
-        }
-
-        public void InsideRightHit()
-        {
-
-        }
-
-        public void InsideBottomHit()
-        {
-
-        }
-
-        public void InsideLeftHit()
-        {
-
-        }
         #endregion
         #region Private Methods
         #endregion

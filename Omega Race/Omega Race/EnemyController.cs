@@ -19,7 +19,7 @@ namespace Omega_Race
         CommandShip rearCommand;
         DeathShip death;
         Vector3[] droidmodelFile;
-        Color color = new Color(190, 190, 255);
+        Color color = new Color(180, 180, 255);
         float count = 5;
 
         #endregion
@@ -78,7 +78,7 @@ namespace Omega_Race
             //The second command ship in the back turns into the Death ship after a time. It follows the droids.
             //Every five levels you get a bonus of 5000 pts.
             List<Vector3> spawnLocations = new List<Vector3>();
-            float edgeX = -Core.ScreenWidth / 1.6f - 0.95f;
+            float edgeX = Core.ScreenWidth / 1.6f - 0.95f;
             float inedgeY = Core.ScreenHeight / 4;
             float outedgeY = Core.ScreenHeight - 1.15f;
 
@@ -91,13 +91,14 @@ namespace Omega_Race
             {
                 spawnLocations.Add(new Vector3(0, Core.RandomMinMax(-outedgeY, -inedgeY), 0));
 
-                if (side < 3)
+                if (side < 2)
                 {
                     spawnLocations[i] = new Vector3(-(i * 3.05f) + edgeX, spawnLocations[i].Y, 0);
                     clockwise = false;
                     leadCommand.X = Core.ScreenWidth / 1.45f;
                     leadCommand.PO.Velocity.X = 2;
                     leadCommand.PO.RotationVelocity.Z = Core.RandomMinMax(-3.5f, -2f);
+                    Main.instance.ThePlayer.X = -Core.ScreenWidth / 1.2f;
                 }
                 else
                 {
@@ -106,6 +107,7 @@ namespace Omega_Race
                     leadCommand.X = -Core.ScreenWidth / 1.45f;
                     leadCommand.PO.Velocity.X = -2;
                     leadCommand.PO.RotationVelocity.Z = Core.RandomMinMax(2f, 3.5f);
+                    Main.instance.ThePlayer.X = Core.ScreenWidth / 1.2f;
                 }
             }
 

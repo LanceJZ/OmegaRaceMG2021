@@ -52,24 +52,28 @@ namespace Omega_Race.Entities
             {
                 PO.Velocity.Y = BoundryBounce(Velocity.Y);
                 MoveFromBoundryY();
+                Main.instance.TheBorders.TopInside.Trigger();
             }
 
             if (Main.instance.TheBorders.InsideBottomCollision.Contains(Position))
             {
                 PO.Velocity.Y = BoundryBounce(Velocity.Y);
                 MoveFromBoundryY();
+                Main.instance.TheBorders.BottomInside.Trigger();
             }
 
             if (Main.instance.TheBorders.InsideLeftCollision.Contains(Position))
             {
                 PO.Velocity.X = BoundryBounce(Velocity.X);
                 MoveFromBoundryX();
+                Main.instance.TheBorders.LeftInside.Trigger();
             }
 
             if (Main.instance.TheBorders.InsideRightCollision.Contains(Position))
             {
                 PO.Velocity.X = BoundryBounce(Velocity.X);
                 MoveFromBoundryX();
+                Main.instance.TheBorders.RightInside.Trigger();
             }
         }
 
@@ -79,24 +83,28 @@ namespace Omega_Race.Entities
             {
                 PO.Velocity.Y = BoundryBounce(Velocity.Y);
                 MoveFromBoundryY();
+                Main.instance.TheBorders.TopOutside.Trigger();
             }
 
             if (Main.instance.TheBorders.OutsideBottomCollision.Contains(Position))
             {
                 PO.Velocity.Y = BoundryBounce(Velocity.Y);
                 MoveFromBoundryY();
+                Main.instance.TheBorders.BottomOutside.Trigger();
             }
 
             if (Main.instance.TheBorders.OutsideLeftCollision.Contains(Position))
             {
                 PO.Velocity.X = BoundryBounce(Velocity.X);
                 MoveFromBoundryX();
+                Main.instance.TheBorders.LeftOutside.Trigger();
             }
 
             if (Main.instance.TheBorders.OutsideRightCollision.Contains(Position))
             {
                 PO.Velocity.X = BoundryBounce(Velocity.X);
                 MoveFromBoundryX();
+                Main.instance.TheBorders.RightOutside.Trigger();
             }
         }
         #endregion

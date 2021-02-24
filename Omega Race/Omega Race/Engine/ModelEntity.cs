@@ -27,10 +27,10 @@ namespace Panther
         #region Properties
         public Camera CameraRef { get => _camera; }
 
-        public Vector3 WorldPosition
-        {
-            get => _PO.WorldPosition;
-        }
+        //public Vector3 WorldPosition
+        //{
+        //    get => _PO.WorldPosition;
+        //}
 
         public Vector3 WorldVelocity
         {
@@ -43,10 +43,10 @@ namespace Panther
             get => _PO.WorldAcceleration;
         }
 
-        public Vector3 WorldRotation
-        {
-            get => _PO.WorldRotation;
-        }
+        //public Vector3 WorldRotation
+        //{
+        //    get => _PO.WorldRotation;
+        //}
 
         public Vector3 WorldRotationVelocity
         {
