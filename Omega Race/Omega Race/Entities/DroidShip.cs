@@ -15,13 +15,16 @@ namespace Omega_Race.Entities
         #region Fields
         protected Camera cameraRef;
         protected Vector3[] droidPath; // 0=Top Left, 1=Top Right, 2=Bottom Right, 3=Bottom Left.
+        protected int points = 1000;
         protected bool firstWave = false;
         protected bool clockwise = false;
+        protected bool command = false;
         #endregion
         #region Properties
-        public bool FirstWave { set => firstWave = value; }
+        public bool FirstWave { get => firstWave; set => firstWave = value; }
         public bool Clockwise { set => clockwise = value; }
-        public Vector3[] DroidPath { set => droidPath = value; }
+        public bool Command { get => command; }
+        public Vector3[] DroidPath { get => droidPath; set => droidPath = value; }
         #endregion
         #region Constructor
         public DroidShip(Game game, Camera camera) : base(game, camera)
@@ -43,7 +46,9 @@ namespace Omega_Race.Entities
 
         public void BeginRun()
         {
-
+            Enabled = true;
+            command = false;
+            Velocity = Vector3.Zero;
         }
         #endregion
         #region Update
@@ -53,14 +58,51 @@ namespace Omega_Race.Entities
 
             if (!firstWave)
             {
-                Move();
                 FollowPath();
             }
+
+            CheckCollision();
         }
         #endregion
         #region Public Methods
         #endregion
         #region Protected Methods
+        protected virtual void CheckCollision()
+        {
+            foreach (Shot shot in Main.instance.ThePlayer.Shots)
+            {
+                if (shot.Enabled)
+                {
+                    if (CirclesIntersect(shot))
+                    {
+                        shot.Enabled = false;
+                        Terminate();
+                    }
+                }
+            }
+
+            if (Main.instance.ThePlayer.Enabled)
+            {
+                if (CirclesIntersect(Main.instance.ThePlayer))
+                {
+                    Terminate();
+                    Main.instance.ThePlayer.Reset();
+                }
+            }
+        }
+
+        protected void Terminate()
+        {
+            Enabled = false;
+            Main.instance.TheEnemies.DroidCount();
+            Main.instance.PlayerScore(points);
+        }
+
+        protected void Explode()
+        {
+
+        }
+
         protected void FollowPath() // 0=Top Left, 1=Top Right, 2=Bottom Right, 3=Bottom Left.
         {
             if (droidPath == null)
@@ -129,11 +171,6 @@ namespace Omega_Race.Entities
         }
         #endregion
         #region Private Methods
-
-        void Move()
-        {
-
-        }
         #endregion
     }
 }

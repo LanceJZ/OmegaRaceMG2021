@@ -21,7 +21,7 @@ namespace Omega_Race
         Vector3[] droidmodelFile;
         Color color = new Color(180, 180, 255);
         float count = 5;
-
+        bool clockwise = false;
         #endregion
         #region Properties
         #endregion
@@ -71,6 +71,85 @@ namespace Omega_Race
         }
         #endregion
         #region Public Methods
+        public void DroidCount()
+        {
+            bool allGone = true;
+
+            foreach (DroidShip droid in droids)
+            {
+                if (droid.Enabled)
+                {
+                    allGone = false;
+                }
+            }
+
+            if (leadCommand.Enabled)
+            {
+                allGone = false;
+            }
+
+            if (rearCommand.Enabled)
+            {
+                allGone = false;
+            }
+
+            if (allGone)
+            {
+                if (count < 9)
+                    count += 2;
+
+                NewWave();
+            }
+            else if (!leadCommand.Enabled)
+            {
+                CommandShipRespawn();
+            }
+
+        }
+
+        public void CommandShipRespawn()
+        {
+            DroidShip thisDroid = null;
+
+            foreach(DroidShip droidShip in droids)
+            {
+                if (droidShip.Enabled)
+                {
+                    thisDroid = droidShip;
+                    break;
+                }
+            }
+
+            if (thisDroid == null)
+            {
+                return;
+            }
+
+            thisDroid.Enabled = false;
+            leadCommand.Spawn(thisDroid.Position);
+            leadCommand.DroidPath = thisDroid.DroidPath;
+            leadCommand.Velocity = thisDroid.Velocity * 2;
+
+            if (clockwise)
+            {
+                leadCommand.PO.RotationVelocity.Z = Core.RandomMinMax(2f, 3.5f);
+
+                if (thisDroid.FirstWave)
+                {
+                    leadCommand.PO.Velocity.X = -2;
+                }
+            }
+            else
+            {
+                leadCommand.PO.RotationVelocity.Z = Core.RandomMinMax(-3.5f, -2f);
+
+                if (thisDroid.FirstWave)
+                {
+                    leadCommand.PO.Velocity.X = 2;
+                }
+            }
+        }
+
         public void NewWave()
         {
             //Starts with five, adds two each wave. Eleven is the max droids.
@@ -85,11 +164,12 @@ namespace Omega_Race
             int side = Core.RandomMinMax(1, 4);
             leadCommand.Y = -Core.ScreenHeight / 2.75f;
 
-            bool clockwise = false;
+            leadCommand.BeginRun();
 
             for (int i = 0; i < count; i++)
             {
                 spawnLocations.Add(new Vector3(0, Core.RandomMinMax(-outedgeY, -inedgeY), 0));
+
 
                 if (side < 2)
                 {
@@ -98,7 +178,7 @@ namespace Omega_Race
                     leadCommand.X = Core.ScreenWidth / 1.45f;
                     leadCommand.PO.Velocity.X = 2;
                     leadCommand.PO.RotationVelocity.Z = Core.RandomMinMax(-3.5f, -2f);
-                    Main.instance.ThePlayer.X = -Core.ScreenWidth / 1.2f;
+                    Main.instance.ThePlayer.Reset(false);
                 }
                 else
                 {
@@ -107,7 +187,7 @@ namespace Omega_Race
                     leadCommand.X = -Core.ScreenWidth / 1.45f;
                     leadCommand.PO.Velocity.X = -2;
                     leadCommand.PO.RotationVelocity.Z = Core.RandomMinMax(2f, 3.5f);
-                    Main.instance.ThePlayer.X = Core.ScreenWidth / 1.2f;
+                    Main.instance.ThePlayer.Reset(true);
                 }
             }
 
@@ -116,12 +196,23 @@ namespace Omega_Race
 
             foreach (Vector3 location in spawnLocations)
             {
-                SpawnDroid(location, clockwise);
+                bool firstWave = false;
+                if (count == 5)
+                {
+                    firstWave = true;
+                }
+
+                SpawnDroid(location, clockwise, firstWave);
+            }
+
+            foreach(Shot shot in Main.instance.ThePlayer.Shots)
+            {
+                shot.Enabled = false;
             }
         }
         #endregion
         #region Private Methods
-        void SpawnDroid(Vector3 position, bool clockwise)
+        void SpawnDroid(Vector3 position, bool clockwise, bool firstWave)
         {
             bool spawnNewDroid = true;
             int droid = droids.Count;
@@ -142,11 +233,13 @@ namespace Omega_Race
                 droids[droid].InitializePoints(droidmodelFile, color, "Droid");
             }
 
-            if (clockwise)
+            droids[droid].BeginRun();
+
+            if (clockwise && !firstWave)
             {
                 droids[droid].PO.Velocity.X = -1;
             }
-            else
+            else if (!firstWave)
             {
                 droids[droid].PO.Velocity.X = 1;
             }
@@ -162,7 +255,8 @@ namespace Omega_Race
             droids[droid].DroidPath = MakePath(position);
             droids[droid].Position = position;
             droids[droid].Clockwise = clockwise;
-            droids[droid].BeginRun();
+            droids[droid].FirstWave = firstWave;
+            droids[droid].UpdateMatrix();
         }
 
         Vector3[] MakePath(Vector3 position)

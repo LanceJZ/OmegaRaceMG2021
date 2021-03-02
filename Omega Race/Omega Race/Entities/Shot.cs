@@ -36,13 +36,14 @@ namespace Omega_Race.Entities
         protected override void LoadContent()
         {
             base.LoadContent();
-            
+
+            Vector3[] lineVertex = { new Vector3(-0.3f, 0, 0), new Vector3(0.3f, 0, 0) };
+            InitializePoints(lineVertex, "Shot");
         }
 
         public void BeginRun()
         {
-            Vector3[] lineVertex = { new Vector3(-0.3f, 0, 0), new Vector3(0.3f, 0, 0) };
-            InitializePoints(lineVertex, "Shot");
+            Enabled = false;
         }
         #endregion
         #region Update

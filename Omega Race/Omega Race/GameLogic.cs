@@ -67,7 +67,7 @@ namespace Omega_Race
         char[] highScoreSelectedLetters = new char[3];
         uint score = 0;
         uint highScore = 0;
-        uint bonusLifeAmount = 10000;
+        uint bonusLifeAmount = 20000;
         uint bonusLifeScore = 0;
         uint wave = 0;
         int lives = 0;
@@ -274,9 +274,9 @@ namespace Omega_Race
             Core.SpriteBatch.End();
         }
 
-        public void PlayerScore(uint points)
+        public void PlayerScore(int points)
         {
-            score += points;
+            score += (uint)points;
             scoreText = score.ToString();
             scorePosition.X = (Core.WindowWidth / 2) - hyper20Font.MeasureString(scoreText).X;
 
@@ -512,6 +512,7 @@ namespace Omega_Race
                 if (playerShipModels[i].Enabled)
                 {
                     playerShipModels[i].Position = new Vector3(line ,row - (i * (player.PO.Radius + 0.5f)), 0);
+                    playerShipModels[i].UpdateMatrix();
                 }
             }
         }

@@ -34,6 +34,7 @@ namespace Omega_Race.Entities
         public override void Initialize()
         {
             base.Initialize();
+            points = 1500;
             inside.AddAsChildOf(this, false, false);
         }
 
@@ -47,9 +48,9 @@ namespace Omega_Race.Entities
 
         public new void BeginRun()
         {
-            //base.BeginRun();
+            base.BeginRun();
             shot.BeginRun();
-
+            command = true;
         }
         #endregion
         #region Update
@@ -66,6 +67,7 @@ namespace Omega_Race.Entities
                 RearGaurd();
             }
 
+            CheckCollision();
         }
         #endregion
         #region Public Methods
@@ -85,6 +87,19 @@ namespace Omega_Race.Entities
 
         }
 
+        protected override void CheckCollision()
+        {
+            base.CheckCollision();
+
+            if (shot.Enabled)
+            {
+                if (shot.CirclesIntersect(Main.instance.ThePlayer))
+                {
+                    shot.Enabled = false;
+                    Main.instance.ThePlayer.Reset();
+                }
+            }
+        }
         void Fire()
         {
             float angle = AimedFire();

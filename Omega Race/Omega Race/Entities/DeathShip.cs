@@ -58,8 +58,6 @@ namespace Omega_Race.Entities
 
         public void BeginRun()
         {
-            //X = Core.ScreenWidth / 1.25f;
-            //Y = Core.ScreenHeight / 3.75f;
 
         }
         #endregion

@@ -17,15 +17,16 @@ namespace Omega_Race.Entities
         Camera cameraRef;
         VectorModel flame;
         Timer flameTimer;
+        List<Shot> shotList = new List<Shot>();
         Color color = new Color(190, 190, 255);
         float thrustAmount = 26.666f;
         float deceleration = 0.0666f;
         float maxVelocity = 20.666f;
-        List<Shot> shotList = new List<Shot>();
+        bool rightSideStart;
         
         #endregion
         #region Properties
-
+        public List<Shot> Shots { get => shotList; }
         #endregion
         #region Constructor
         public Player(Game game, Camera camera) : base(game, camera)
@@ -66,7 +67,7 @@ namespace Omega_Race.Entities
 
             flame.AddAsChildOf(this);
 
-            Y = Core.ScreenHeight / 1.75f;
+            //Y = Core.ScreenHeight / 1.75f;
             PO.Rotation.Z = MathF.PI / 2 + MathF.PI;
         }
         #endregion
@@ -81,6 +82,27 @@ namespace Omega_Race.Entities
         }
         #endregion
         #region Public
+        public void Reset(bool rightSide)
+        {
+            rightSideStart = rightSide;
+            Reset();
+        }
+
+        public void Reset()
+        {
+            if (rightSideStart)
+            {
+                X = Core.ScreenWidth / 1.2f;
+            }
+            else
+            {
+                X = -Core.ScreenWidth / 1.2f;
+            }
+
+            Y = Core.ScreenHeight / 1.75f;
+            Velocity = Vector3.Zero;
+            UpdateMatrix();
+        }
         #endregion
         #region Private
 
