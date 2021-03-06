@@ -9,22 +9,17 @@ using System.Linq;
 
 namespace Omega_Race.Entities
 {
-    public class DeathShip : VectorModel
+    public class PhotonMine : Enemy
     {
-        //Drops mines every few seconds, chases player.
         #region Fields
-        VectorModel[] blades = new VectorModel[2];
-        Color color = new Color(190, 190, 255);
-
         #endregion
         #region Properties
 
         #endregion
         #region Constructor
-        public DeathShip(Game game, Camera camera) : base(game, camera)
+        public PhotonMine(Game game, Camera camera) : base(game, camera)
         {
-            blades[0] = new VectorModel(game, camera);
-            blades[1] = new VectorModel(game, camera);
+
         }
         #endregion
         #region Initialize-Load-BeginRun
@@ -32,29 +27,17 @@ namespace Omega_Race.Entities
         {
             base.Initialize();
 
-            blades[1].PO.Rotation.Z = MathF.PI / 2;
-
-            foreach(VectorModel blade in blades)
-            {
-                blade.AddAsChildOf(this);
-                blade.PO.RotationVelocity.Z = 10.75f;
-            }
+            points = 350;
         }
 
         protected override void LoadContent()
         {
             base.LoadContent();
-
-            LoadVectorModel("PhotonMine", color);
-
-            foreach (VectorModel blade in blades)
-            {
-                blade.LoadVectorModel("DeathShipBlade", color);
-            }
         }
 
-        public void BeginRun()
+        public override void BeginRun()
         {
+            base.BeginRun();
 
         }
         #endregion

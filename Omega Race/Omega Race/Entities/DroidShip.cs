@@ -9,27 +9,24 @@ using System.Linq;
 
 namespace Omega_Race.Entities
 {
-    public class DroidShip : VectorModel
+    public class DroidShip : Enemy
     {
         //After the first wave, they slowly move on a track.
         #region Fields
-        protected Camera cameraRef;
         protected Vector3[] droidPath; // 0=Top Left, 1=Top Right, 2=Bottom Right, 3=Bottom Left.
-        protected int points = 1000;
         protected bool firstWave = false;
         protected bool clockwise = false;
         protected bool command = false;
         #endregion
         #region Properties
         public bool FirstWave { get => firstWave; set => firstWave = value; }
-        public bool Clockwise { set => clockwise = value; }
+        public bool Clockwise { get => clockwise; set => clockwise = value; }
         public bool Command { get => command; }
         public Vector3[] DroidPath { get => droidPath; set => droidPath = value; }
         #endregion
         #region Constructor
         public DroidShip(Game game, Camera camera) : base(game, camera)
         {
-            cameraRef = camera;
 
         }
         #endregion
@@ -37,6 +34,8 @@ namespace Omega_Race.Entities
         public override void Initialize()
         {
             base.Initialize();
+
+            points = 1000;
         }
 
         protected override void LoadContent()
@@ -44,11 +43,15 @@ namespace Omega_Race.Entities
             base.LoadContent();
         }
 
-        public void BeginRun()
+        public override void BeginRun()
         {
-            Enabled = true;
             command = false;
-            Velocity = Vector3.Zero;
+        }
+
+        public override void Spawn(Vector3 position)
+        {
+            base.Spawn(position);
+
         }
         #endregion
         #region Update
@@ -60,47 +63,16 @@ namespace Omega_Race.Entities
             {
                 FollowPath();
             }
-
-            CheckCollision();
         }
         #endregion
         #region Public Methods
         #endregion
         #region Protected Methods
-        protected virtual void CheckCollision()
+        protected override void Terminate()
         {
-            foreach (Shot shot in Main.instance.ThePlayer.Shots)
-            {
-                if (shot.Enabled)
-                {
-                    if (CirclesIntersect(shot))
-                    {
-                        shot.Enabled = false;
-                        Terminate();
-                    }
-                }
-            }
+            base.Terminate();
 
-            if (Main.instance.ThePlayer.Enabled)
-            {
-                if (CirclesIntersect(Main.instance.ThePlayer))
-                {
-                    Terminate();
-                    Main.instance.ThePlayer.Reset();
-                }
-            }
-        }
-
-        protected void Terminate()
-        {
-            Enabled = false;
             Main.instance.TheEnemies.DroidCount();
-            Main.instance.PlayerScore(points);
-        }
-
-        protected void Explode()
-        {
-
         }
 
         protected void FollowPath() // 0=Top Left, 1=Top Right, 2=Bottom Right, 3=Bottom Left.

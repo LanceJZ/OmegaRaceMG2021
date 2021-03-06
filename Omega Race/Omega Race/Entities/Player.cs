@@ -14,7 +14,6 @@ namespace Omega_Race.Entities
     public class Player : BorderBounce
     {
         #region Fields
-        Camera cameraRef;
         VectorModel flame;
         Timer flameTimer;
         List<Shot> shotList = new List<Shot>();
@@ -31,7 +30,6 @@ namespace Omega_Race.Entities
         #region Constructor
         public Player(Game game, Camera camera) : base(game, camera)
         {
-            cameraRef = camera;
             flame = new VectorModel(game, camera);
             flameTimer = new Timer(game, 0.015f);
             //Enabled = false;

@@ -35,6 +35,7 @@ namespace Panther
         public float Alpha { get => alpha; set => alpha = value; }
         public float ModelScale { get => modelScale; set => modelScale = value; }
         public string Name { get => name; set => name = value; }
+        public Camera TheCamera { get => theCamera; }
 
         public VectorModel (Game game, Camera camera): base(game, camera)
         {
