@@ -176,6 +176,9 @@ namespace Omega_Race
                 droidShip.Enabled = false;
             }
 
+            rearCommand.Enabled = false;
+            rearDroidSpawnTimer.Reset();
+
             NewWave();
         }
 
