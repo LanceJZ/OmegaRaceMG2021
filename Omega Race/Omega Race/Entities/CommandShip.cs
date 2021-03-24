@@ -163,7 +163,7 @@ namespace Omega_Race.Entities
             if (shotTimer.Elapsed)
             {
                 shotTimer.Reset();
-                Fire();
+                Fire(shot);
             }
         }
 
@@ -181,29 +181,6 @@ namespace Omega_Race.Entities
                 SpawnVaporMine();
             }
         }
-
-        void Fire()
-        {
-            float angle = AimedFire();
-            Vector3 dir = Core.VelocityFromAngleZ(angle, 16.66f);
-            Vector3 offset = Core.VelocityFromAngleZ(angle, PO.Radius);
-
-            //fireSound.Play(0.25f, 0, 0);
-            shot.Spawn(Position + offset, new Vector3(0, 0, angle), dir, 1.25f);
-        }
         #endregion
-        float AimedFire()
-        {
-            float percentChance = 0.25f - (Main.instance.Score * 0.00001f);
-
-            if (percentChance < 0)
-            {
-                percentChance = 0;
-            }
-
-            return PO.AngleFromVectorsZ(Main.instance.ThePlayer.Position) +
-                Core.RandomMinMax(-percentChance, percentChance);
-        }
-
     }
 }

@@ -90,6 +90,29 @@ namespace Omega_Race.Entities
 
         }
         #endregion
+        #region Protected Methods
+        protected void Fire(Shot shot)
+        {
+            float angle = AimedFire();
+            Vector3 dir = Core.VelocityFromAngleZ(angle, 16.66f);
+            Vector3 offset = Core.VelocityFromAngleZ(angle, PO.Radius);
+
+            //fireSound.Play(0.25f, 0, 0);
+            shot.Spawn(Position + offset, new Vector3(0, 0, angle), dir, 1.25f);
+        }
+        protected float AimedFire()
+        {
+            float percentChance = 0.25f - (Main.instance.Score * 0.00001f);
+
+            if (percentChance < 0)
+            {
+                percentChance = 0;
+            }
+
+            return PO.AngleFromVectorsZ(Main.instance.ThePlayer.Position) +
+                Core.RandomMinMax(-percentChance, percentChance);
+        }
+        #endregion
         #region Private Methods
         #endregion
     }

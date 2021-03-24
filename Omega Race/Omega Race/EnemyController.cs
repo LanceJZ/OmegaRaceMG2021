@@ -16,9 +16,10 @@ namespace Omega_Race
         Camera cameraRef;
         List<DroidShip> droids;
         CommandShip leadCommand;
-        CommandShip rearCommand;
-        DeathShip death;
-        Timer rearDroidSpawnTimer;
+        CommandShip secondCommand;
+        DeathShip deathship;
+        Timer secondCommandshipSpawnTimer;
+        Timer deathshipSpawnTimer;
         Vector3[] droidModelFile;
         Color color = new Color(180, 180, 255);
         float count = 5;
@@ -31,11 +32,12 @@ namespace Omega_Race
         public EnemyController(Game game, Camera camera) : base(game)
         {
             cameraRef = camera;
-            rearDroidSpawnTimer = new Timer(game, 3);
+            secondCommandshipSpawnTimer = new Timer(game, 3);
+            deathshipSpawnTimer = new Timer(game);
             droids = new List<DroidShip>();
             leadCommand = new CommandShip(game, camera);
-            rearCommand = new CommandShip(game, camera);
-            death = new DeathShip(game, camera);
+            secondCommand = new CommandShip(game, camera);
+            deathship = new DeathShip(game, camera);
 
             game.Components.Add(this);
         }
@@ -59,11 +61,12 @@ namespace Omega_Race
             leadCommand.BeginRun();
             leadCommand.Leader = true;
             // Rear command ship takes five seconds after 2nd wave start to appear. Drops mines. Turns into Death ship.
-            rearCommand.Enabled = false;
-            rearCommand.Leader = false;
-            death.BeginRun();
-            death.Enabled = false;
-            rearDroidSpawnTimer.Enabled = false;
+            secondCommand.Enabled = false;
+            secondCommand.Leader = false;
+            deathship.BeginRun();
+            deathship.Enabled = false;
+            deathshipSpawnTimer.Enabled = false;
+            secondCommandshipSpawnTimer.Enabled = false;
         }
         #endregion
         #region Update
@@ -71,14 +74,28 @@ namespace Omega_Race
         {
             base.Update(gameTime);
 
-
-            if (rearDroidSpawnTimer.Elapsed)
+            if (firstWave)
             {
-                rearDroidSpawnTimer.Reset();
+                return;
+            }
 
-                if (!rearCommand.Enabled && !firstWave)
+            if (secondCommandshipSpawnTimer.Elapsed)
+            {
+                secondCommandshipSpawnTimer.Reset();
+
+                if (!secondCommand.Enabled)
                 {
-                    SpawnRearCommand();
+                    SpawnSecondCommand();
+                }
+            }
+
+            if (deathshipSpawnTimer.Elapsed)
+            {
+                deathshipSpawnTimer.Enabled = false;
+
+                if (!deathship.Enabled)
+                {
+                    SpawnDeathship();
                 }
             }
         }
@@ -102,7 +119,12 @@ namespace Omega_Race
                 allGone = false;
             }
 
-            if (rearCommand.Enabled)
+            if (secondCommand.Enabled)
+            {
+                allGone = false;
+            }
+
+            if (deathship.Enabled)
             {
                 allGone = false;
             }
@@ -118,9 +140,13 @@ namespace Omega_Race
             {
                 CommandShipRespawn();
             }
-            else if (!rearCommand.Enabled)
+            else if (!secondCommand.Enabled && !firstWave)
             {
-                rearDroidSpawnTimer.Reset();
+                secondCommandshipSpawnTimer.Reset();
+            }
+            else if (secondCommand.Enabled && !deathship.Enabled)
+            {
+                deathshipSpawnTimer.Reset();
             }
 
         }
@@ -176,8 +202,10 @@ namespace Omega_Race
                 droidShip.Enabled = false;
             }
 
-            rearCommand.Enabled = false;
-            rearDroidSpawnTimer.Reset();
+            secondCommand.Enabled = false;
+            secondCommandshipSpawnTimer.Reset();
+            deathship.Enabled = false;
+            deathshipSpawnTimer.Enabled = false;
 
             NewWave();
         }
@@ -247,16 +275,23 @@ namespace Omega_Race
 
             if (!firstWave)
             {
-                rearDroidSpawnTimer.Reset();
+                secondCommandshipSpawnTimer.Reset();
             }
         }
         #endregion
         #region Private Methods
-        void SpawnRearCommand()
+        void SpawnDeathship()
+        {
+            deathship.Position = secondCommand.Position;
+            deathship.BeginRun();
+            secondCommand.Enabled = false;
+        }
+
+        void SpawnSecondCommand()
         {
             DroidShip droidPick = null;
             int droidsEnabled = 0;
-            rearDroidSpawnTimer.Reset();
+            secondCommandshipSpawnTimer.Reset();
 
             foreach(DroidShip droidShip in droids)
             {
@@ -280,14 +315,19 @@ namespace Omega_Race
 
             if (droidPick != null)
             {
-                rearDroidSpawnTimer.Enabled = false;
+                secondCommandshipSpawnTimer.Enabled = false;
                 droidPick.Enabled = false;
-                rearCommand.Spawn(droidPick.Position);
-                rearCommand.BeginRun();
-                rearCommand.DroidPath = droidPick.DroidPath;
-                rearCommand.Velocity = droidPick.Velocity;
-                rearCommand.Clockwise = droidPick.Clockwise;
-                rearCommand.RotationVelocity = droidPick.RotationVelocity;
+                secondCommand.Spawn(droidPick.Position);
+                secondCommand.BeginRun();
+                secondCommand.DroidPath = droidPick.DroidPath;
+                secondCommand.Velocity = droidPick.Velocity;
+                secondCommand.Clockwise = droidPick.Clockwise;
+                secondCommand.RotationVelocity = droidPick.RotationVelocity;
+            }
+
+            if (!deathshipSpawnTimer.Enabled)
+            {
+                deathshipSpawnTimer.Reset(20); //should be 20. 5 for testing.
             }
         }
 

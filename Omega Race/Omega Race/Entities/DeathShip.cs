@@ -9,12 +9,14 @@ using System.Linq;
 
 namespace Omega_Race.Entities
 {
-    public class DeathShip : VectorModel
+    public class DeathShip : Enemy
     {
         //Drops mines every few seconds, chases player.
         #region Fields
+        BorderBounce borderBounce;
+        Shot shot;
+        Timer shotTimer;
         VectorModel[] blades = new VectorModel[2];
-        Color color = new Color(190, 190, 255);
 
         #endregion
         #region Properties
@@ -25,6 +27,9 @@ namespace Omega_Race.Entities
         {
             blades[0] = new VectorModel(game, camera);
             blades[1] = new VectorModel(game, camera);
+            borderBounce = new BorderBounce(game, camera);
+            shot = new Shot(game, camera);
+            shotTimer = new Timer(game, 2);
         }
         #endregion
         #region Initialize-Load-BeginRun
@@ -39,6 +44,8 @@ namespace Omega_Race.Entities
                 blade.AddAsChildOf(this);
                 blade.PO.RotationVelocity.Z = 10.75f;
             }
+
+            borderBounce.Moveable = false;
         }
 
         protected override void LoadContent()
@@ -53,9 +60,19 @@ namespace Omega_Race.Entities
             }
         }
 
-        public void BeginRun()
+        public override void BeginRun()
         {
+            base.BeginRun();
 
+            Enabled = true;
+            shot.BeginRun();
+            UpdateMatrix();
+            Velocity = Vector3.Zero;
+
+            foreach (VectorModel blade in blades)
+            {
+                blade.UpdateMatrix();
+            }
         }
         #endregion
         #region Update
@@ -63,11 +80,32 @@ namespace Omega_Race.Entities
         {
             base.Update(gameTime);
 
+            borderBounce.Position = Position;
+            borderBounce.Velocity = Velocity;
+
+            if (shotTimer.Elapsed)
+            {
+                shotTimer.Reset();
+                Fire(shot);
+            }
+
         }
         #endregion
         #region Public Methods
         #endregion
+        #region Protected Methods
+        protected override void Terminate()
+        {
+            base.Terminate();
+
+        }
+        #endregion
         #region Private Methods
+        void ChasePlayer()
+        {
+
+        }
+
         #endregion
     }
 }

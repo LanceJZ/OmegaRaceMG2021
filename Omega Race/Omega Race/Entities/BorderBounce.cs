@@ -44,15 +44,14 @@ namespace Omega_Race.Entities
         }
         #endregion
         #region Public Methods
-        #endregion
-        #region Protected Methods
-        protected void CheckInsideBoundry()
+        public bool CheckInsideBoundry()
         {
             if (Main.instance.TheBorders.InsideTopCollision.Contains(Position))
             {
                 PO.Velocity.Y = BoundryBounce(Velocity.Y);
                 MoveFromBoundryY();
                 Main.instance.TheBorders.TopInside.Trigger();
+                return true;
             }
 
             if (Main.instance.TheBorders.InsideBottomCollision.Contains(Position))
@@ -60,6 +59,7 @@ namespace Omega_Race.Entities
                 PO.Velocity.Y = BoundryBounce(Velocity.Y);
                 MoveFromBoundryY();
                 Main.instance.TheBorders.BottomInside.Trigger();
+                return true;
             }
 
             if (Main.instance.TheBorders.InsideLeftCollision.Contains(Position))
@@ -67,6 +67,7 @@ namespace Omega_Race.Entities
                 PO.Velocity.X = BoundryBounce(Velocity.X);
                 MoveFromBoundryX();
                 Main.instance.TheBorders.LeftInside.Trigger();
+                return true;
             }
 
             if (Main.instance.TheBorders.InsideRightCollision.Contains(Position))
@@ -74,16 +75,20 @@ namespace Omega_Race.Entities
                 PO.Velocity.X = BoundryBounce(Velocity.X);
                 MoveFromBoundryX();
                 Main.instance.TheBorders.RightInside.Trigger();
+                return true;
             }
+
+            return false;
         }
 
-        protected void CheckOutsideBoundry()
+        public bool CheckOutsideBoundry()
         {
             if (Main.instance.TheBorders.OutsideTopCollision.Contains(Position))
             {
                 PO.Velocity.Y = BoundryBounce(Velocity.Y);
                 MoveFromBoundryY();
                 Main.instance.TheBorders.TopOutside.Trigger();
+                return true;
             }
 
             if (Main.instance.TheBorders.OutsideBottomCollision.Contains(Position))
@@ -91,6 +96,7 @@ namespace Omega_Race.Entities
                 PO.Velocity.Y = BoundryBounce(Velocity.Y);
                 MoveFromBoundryY();
                 Main.instance.TheBorders.BottomOutside.Trigger();
+                return true;
             }
 
             if (Main.instance.TheBorders.OutsideLeftCollision.Contains(Position))
@@ -98,6 +104,7 @@ namespace Omega_Race.Entities
                 PO.Velocity.X = BoundryBounce(Velocity.X);
                 MoveFromBoundryX();
                 Main.instance.TheBorders.LeftOutside.Trigger();
+                return true;
             }
 
             if (Main.instance.TheBorders.OutsideRightCollision.Contains(Position))
@@ -105,8 +112,13 @@ namespace Omega_Race.Entities
                 PO.Velocity.X = BoundryBounce(Velocity.X);
                 MoveFromBoundryX();
                 Main.instance.TheBorders.RightOutside.Trigger();
+                return true;
             }
+
+            return false;
         }
+        #endregion
+        #region Protected Methods
         #endregion
         #region Private Methods
         void MoveFromBoundryX()
